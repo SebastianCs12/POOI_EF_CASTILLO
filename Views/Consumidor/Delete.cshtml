@@ -1,0 +1,67 @@
+﻿@model POOI_EF_SEBASTIANCASTILLO.Models.Consumidor
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Consumidor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.dnicont)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dnicont)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nomcont)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nomcont)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.apecont)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.apecont)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.emailcont)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.emailcont)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idpais)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idpais)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.dnicont)
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

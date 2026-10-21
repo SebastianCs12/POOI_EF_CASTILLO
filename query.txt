@@ -1,0 +1,99 @@
+CREATE DATABASE Examenfinal
+
+USE Examenfinal
+
+CREATE TABLE tb_paises 
+	(idpais CHAR(3) PRIMARY KEY)
+
+INSERT INTO tb_paises (idpais) VALUES ('PER')
+
+CREATE TABLE tb_consumidor
+(
+    dnicont CHAR(8) PRIMARY KEY,
+    nomcont VARCHAR(40) NOT NULL,
+    apecont VARCHAR(40) NOT NULL,
+    emailcont VARCHAR(250) UNIQUE,
+    idpais CHAR(3) REFERENCES tb_paises(idpais)
+)
+CREATE OR ALTER PROCEDURE usp_agrega_consumidor
+@dnicont varchar(50),
+@nomcont varchar(40),
+@apecont varchar(40),
+@emailcont varchar(250),
+@idpais char(3),
+@mensaje varchar(250) OUTPUT
+AS
+BEGIN
+    IF @dnicont IS NULL OR LEN(@dnicont) <> 8
+       OR @dnicont LIKE '%[^0-9]%'
+        SET @mensaje = 'El DNI debe tener 8 dígitos numéricos'
+    ELSE IF @nomcont IS NULL OR @nomcont = ''
+        SET @mensaje = 'Ingrese los nombres'
+    ELSE IF @apecont IS NULL OR @apecont = ''
+        SET @mensaje = 'Ingrese los apellidos'
+    ELSE
+    BEGIN
+        INSERT INTO tb_consumidor
+        VALUES (@dnicont, @nomcont, @apecont, @emailcont, @idpais)
+
+        SET @mensaje = 'Consumidor registrado'
+    END
+END
+CREATE OR ALTER PROCEDURE usp_eliminar_consumidor
+@dnicont char(8),
+@mensaje varchar(250) OUTPUT
+AS
+BEGIN
+    IF EXISTS
+    (
+        SELECT * FROM tb_consumidor
+        WHERE dnicont = @dnicont
+    )
+    BEGIN
+        DELETE FROM tb_consumidor
+        WHERE dnicont = @dnicont
+
+        SET @mensaje = 'Consumidor eliminado'
+    END
+    ELSE
+        SET @mensaje = 'El consumidor no existe'
+END
+
+
+CREATE OR ALTER PROCEDURE usp_listar_consumidor
+AS
+BEGIN
+    SELECT * FROM tb_consumidor
+END
+
+CREATE OR ALTER PROCEDURE usp_actualizar_consumidor
+@dnicont char(8),
+@nomcont varchar(40),
+@apecont varchar(40),
+@emailcont varchar(250),
+@idpais char(3),
+@mensaje varchar(250) OUTPUT
+AS
+BEGIN
+    IF NOT EXISTS
+    (
+        SELECT * FROM tb_consumidor
+        WHERE dnicont = @dnicont
+    )
+        SET @mensaje = 'El consumidor no existe'
+    ELSE IF @nomcont IS NULL OR @nomcont = ''
+        SET @mensaje = 'Ingrese los nombres'
+    ELSE IF @apecont IS NULL OR @apecont = ''
+        SET @mensaje = 'Ingrese los apellidos'
+    ELSE
+    BEGIN
+        UPDATE tb_consumidor
+        SET nomcont = @nomcont,
+            apecont = @apecont,
+            emailcont = @emailcont,
+            idpais = @idpais
+        WHERE dnicont = @dnicont
+
+        SET @mensaje = 'Consumidor actualizado'
+    END
+END

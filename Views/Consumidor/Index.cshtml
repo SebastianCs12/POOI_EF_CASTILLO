@@ -1,0 +1,68 @@
+﻿@model IEnumerable<POOI_EF_SEBASTIANCASTILLO.Models.Consumidor>
+@using System.Linq
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>@TempData["Mensaje"]</p>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@if (!Model.Any())
+{
+    <p>No hay registros</p>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.dnicont)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nomcont)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.apecont)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.emailcont)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idpais)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dnicont)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nomcont)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.apecont)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emailcont)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idpais)
+                </td>
+                <td>
+
+                    @Html.ActionLink("Delete", "Delete", new { dni = item.dnicont })
+                    @Html.ActionLink("Update", "Update", new { dni = item.dnicont }) 
+                </td>
+            </tr>
+        }
+
+    </table>
+}
